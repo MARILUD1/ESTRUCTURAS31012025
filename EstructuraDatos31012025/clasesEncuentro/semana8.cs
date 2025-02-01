@@ -1,4 +1,4 @@
-public static class colas{
+public static class Colas{
     public static void run(){
     
         System.Console.WriteLine("ejercicio de colas - semana8");
