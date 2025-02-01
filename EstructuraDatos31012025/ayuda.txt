@@ -1,0 +1,5 @@
+public static class Ponaquielnombre{
+    public static void run(){
+        //pon aqui tu codigo
+    }
+}
