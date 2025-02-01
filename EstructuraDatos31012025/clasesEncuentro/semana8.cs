@@ -1,5 +1,6 @@
 public static class colas{
     public static void run(){
+    
         System.Console.WriteLine("ejercicio de colas - semana8");
         Queue<string> estudiantes= new Queue<string>();
         estudiantes.Enqueue("Ana");
