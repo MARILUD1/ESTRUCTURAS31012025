@@ -61,10 +61,10 @@ public static class Conjuntos{
         }
     
 
-    // Leer los registros
-     void LeerArchivo(string archivo, HashSet<string> conjunto)
-    {
-        try
+        // Leer los registros
+        void LeerArchivo(string archivo, HashSet<string> conjunto)
+        {
+            try
         {
             StreamReader lector = new StreamReader(archivo);
             string registro;
@@ -79,30 +79,30 @@ public static class Conjuntos{
         {
             Console.WriteLine("Error al leer '" + archivo + "': " + ex.Message);
         }
-    }
+         }
 
-    // Imprimir los ciudadanos con su respectivo número
-    void ImprimirListaNumerada(HashSet<string> conjunto)
-    {
-        int contador = 1;
-        foreach (var item in conjunto)
+        // Imprimir los ciudadanos con su respectivo número
+        void ImprimirListaNumerada(HashSet<string> conjunto)
         {
-            Console.WriteLine($"{contador}. {item}");
-            contador++;
+            int contador = 1;
+            foreach (var item in conjunto)
+            {
+                Console.WriteLine($"{contador}. {item}");
+                contador++;
+            }
         }
-    }
 
-    // Función para calcular la intersección de dos conjuntos
-     HashSet<string> Interseccion(HashSet<string> conjunto1, HashSet<string> conjunto2)
-    {
-        HashSet<string> interseccion = new HashSet<string>(conjunto1);
-        interseccion.IntersectWith(conjunto2);
-        return interseccion;
-    }
+        // Función para calcular la intersección de dos conjuntos
+        HashSet<string> Interseccion(HashSet<string> conjunto1, HashSet<string> conjunto2)
+        {
+            HashSet<string> interseccion = new HashSet<string>(conjunto1);
+            interseccion.IntersectWith(conjunto2);
+            return interseccion;
+        }
 
 
-    }
-}
+        }
+     }
 
 
 
