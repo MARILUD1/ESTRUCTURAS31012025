@@ -4,7 +4,6 @@ Console.WriteLine("UNIVERSIDAD ESTATAL AMAZONICA");
 //Colas.run();
 //Pilas.run();
 //Practico.run();
-Conjuntos.run();
-
-
-        
+//Conjuntos.run();
+//Juego.run();
+Traductoringles_español.run();

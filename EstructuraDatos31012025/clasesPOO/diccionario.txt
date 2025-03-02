@@ -1,0 +1,21 @@
+Time — tiempo.
+Person — persona.
+Year — año.
+Way — camino.
+Day — día.
+Thing — cosa.
+Man — hombre.
+World —mundo.
+Life — vida.
+Hand — mano.
+Part — parte.
+Child — niño.
+Eye — ojo.
+Woman — mujer.
+Place — lugar.
+Work — trabajo.
+Week — semana.
+Case — caso.
+Point — punto.
+Government — gobierno.
+Company — empresa.cat — gato
