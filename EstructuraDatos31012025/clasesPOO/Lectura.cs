@@ -124,7 +124,7 @@
                     Console.WriteLine("SALIR DEL PROGRAMA...");
                     break;
                 default:
-                    Console.WriteLine("Opción no válida, intente de nuevo.");
+                    Console.WriteLine("OPCION NO VALIDA, INTENTE NUEVAMENTE.");
                     break;
             }
         } while (opcion != 4);
