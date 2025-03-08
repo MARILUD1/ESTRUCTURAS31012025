@@ -1,6 +1,6 @@
    
    
-public static class Lectura {
+    public static class Lectura {
     public static void run(){
         System.Console.WriteLine("BIENVENIDOS A LA UNIVERSIDAD ESTATAL AMAZONICA");
         Console.WriteLine("PRÁCTICO EXPERIMENTAL 3");
@@ -66,10 +66,10 @@ public static class Lectura {
             Console.WriteLine("NO EXISTEN LIBROS CON ESTE TITULO.");
         }
     }
-}
+    }       
     
    public class Libros
-{
+    {
      public void run()
     {
         Biblioteca biblioteca = new Biblioteca();
