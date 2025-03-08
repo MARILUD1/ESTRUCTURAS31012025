@@ -28,7 +28,7 @@
     }
 
     class Biblioteca
-{
+    {
     private List<Libro> libros = new List<Libro>();
 
     public void AgregarLibro(Libro libro)
