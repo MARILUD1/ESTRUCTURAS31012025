@@ -1,4 +1,6 @@
 ﻿
+using System.Runtime.CompilerServices;
+
 Console.WriteLine("UNIVERSIDAD ESTATAL AMAZONICA");
 //Vectores.run();
 //Colas.run();
@@ -7,4 +9,5 @@ Console.WriteLine("UNIVERSIDAD ESTATAL AMAZONICA");
 //Conjuntos.run();
 //Juego.run();
 //Traductoringles_español.run();
-Practica3.run();
+//Practica3.run();
+ArbolesBinarios.run();
