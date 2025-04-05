@@ -23,8 +23,8 @@ Console.WriteLine();
        
         if (!File.Exists("vuelos.txt"))
         {
-            Console.WriteLine(" Error: El archivo 'vuelos.txt' no se encuentra en el directorio actual.");
-            Console.WriteLine("Asegúrate de colocarlo en la misma carpeta que el ejecutable o el archivo .cs");
+            Console.WriteLine();
+            
             return;
         }
         Vuelos vuelos = new Vuelos();
@@ -100,7 +100,6 @@ class Vuelos
             Console.WriteLine($"Costo total: ${costo:F2}");
         }
     }
-
     void MostrarCostosOrdenados(GraphMatrix grafo, ArbolBinario arbol)
     {
         foreach (var costoVuelo in grafo.listaCostos)
@@ -110,10 +109,10 @@ class Vuelos
 
         arbol.MostrarInorden();
     }
-}
+    }
 
-class Nodo
-{
+    class Nodo
+    {
     public double valor;
     public Nodo izquierdo;
     public Nodo derecho;
@@ -124,10 +123,10 @@ class Nodo
         izquierdo = null;
         derecho = null;
     }
-}
+    }
 
-class ArbolBinario
-{
+    class ArbolBinario
+    {
     public Nodo raiz;
 
     public void Insertar(double valor)
@@ -164,10 +163,10 @@ class ArbolBinario
             Inorden(nodo.derecho);
         }
     }
-}
+    }
 
-class GraphMatrix
-{
+    class GraphMatrix
+    {
     private double[,] adjMatrix;
     private int size;
     public Dictionary<string, int> cityToIndex = new();
@@ -194,7 +193,7 @@ class GraphMatrix
         int index = 0;
         foreach (var city in cities)
         {
-            cityToIndex[city] = index; //cityToIndex
+            cityToIndex[city] = index; //cityToIndex mapea las rutas
             indexToCity[index] = city;
             index++;
         }
