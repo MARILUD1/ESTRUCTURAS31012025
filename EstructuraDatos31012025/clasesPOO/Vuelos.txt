@@ -1,0 +1,20 @@
+Quito,Guayaquil,LATAM,85.50
+Quito,Guayaquil,Avianca,92.00
+Quito,Cuenca,TAME,70.00
+Guayaquil,Quito,LATAM,78.25
+Guayaquil,Cuenca,Avianca,65.75
+Cuenca,Quito,TAME,60.00
+Cuenca,Guayaquil,LATAM,72.90
+Quito,Manta,Avianca,105.00
+Manta,Quito,TAME,98.50
+Guayaquil,Galápagos,LATAM,150.00
+Galápagos,Guayaquil,Avianca,165.25
+Quito,Loja,TAME,88.00
+Loja,Quito,LATAM,95.50
+Guayaquil,Esmeraldas,Avianca,75.00
+Esmeraldas,Guayaquil,TAME,68.75
+Quito,Nueva York,United,450.00
+Guayaquil,Miami,American,380.50
+Cuenca,Madrid,Iberia,720.00
+Manta,Panamá,Copa,280.75
+Loja,Bogotá,Avianca,195.00

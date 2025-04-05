@@ -1,9 +1,9 @@
 public static class ArbolesBinarios{
     public static void run(){
        System.Console.WriteLine();
-System.Console.WriteLine("TAREA SEMANA 13");
-System.Console.WriteLine();
-    }
+        System.Console.WriteLine("TAREA SEMANA 13");
+        System.Console.WriteLine();
+            }
 
 
 

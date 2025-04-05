@@ -12,147 +12,271 @@ Console.WriteLine("UNIVERSIDAD ESTATAL AMAZONICA");
 //Traductoringles_español.run();
 //Practica3.run();
 //ArbolesBinarios.run();
+System.Console.WriteLine("semana 16");
+Console.WriteLine();
+Console.WriteLine("PRACTICA 4 RECORRIDOS DFS EN GRAFOS");
+Console.WriteLine();
+// Encuentro de vuelos baratos a partir de una base de datos
+//arbol binario
 
 
-Arbol arbol = new Arbol();
-int opcion, numero;
-string nombre;
-// MENÚ PARA INGRESAR POR CONSOLA
-do
+       
+        if (!File.Exists("vuelos.txt"))
+        {
+            Console.WriteLine(" Error: El archivo 'vuelos.txt' no se encuentra en el directorio actual.");
+            Console.WriteLine("Asegúrate de colocarlo en la misma carpeta que el ejecutable o el archivo .cs");
+            return;
+        }
+        Vuelos vuelos = new Vuelos();
+        vuelos.Run();
+        
+class Vuelos
 {
-    Console.WriteLine("INGRESA UNA OPCION DEL MENÚ:");
-    Console.WriteLine();
-    Console.WriteLine(" MENÚ ÁRBOL DE ORDEN DE LLEGADA ");
-    Console.WriteLine();
-    Console.WriteLine("1. Coloca el nombre y puesto del concursante");
-    Console.WriteLine("2. Mostrar recorrido Preorden");
-    Console.WriteLine("3. Mostrar recorrido Inorden");
-    Console.WriteLine("4. Mostrar recorrido Postorden");
-    Console.WriteLine("5. Salir");
-
-    if (!int.TryParse(Console.ReadLine(), out opcion))
+    public void Run()
     {
-        Console.WriteLine("Opción incorrecta, ingrese un número válido.");
-        continue;
-    }
+        var grafo = new GraphMatrix("vuelos.txt");
+        var arbol = new ArbolBinario();
 
-    switch (opcion)
-    {
-        case 1:
-            Console.Write("Coloca el puesto de llegada del concursante: ");
-            if (int.TryParse(Console.ReadLine(), out numero))
+        int opcion;
+        do
+        {
+            Console.WriteLine("SELECCIONA UNA OPCION DEL MENÚ");
+            Console.WriteLine();
+            Console.WriteLine("MENU");
+            Console.WriteLine();
+            Console.WriteLine("1. Buscar vuelo más barato.");
+            Console.WriteLine("2. Mostrar costos ordenados.");
+            Console.WriteLine("3. Salir.");
+            ;
+
+            if (int.TryParse(Console.ReadLine(), out opcion))
             {
-                Console.Write("Coloca su nombre: ");
-                nombre = Console.ReadLine();
-                arbol.Insertar(numero, nombre);
-                Console.WriteLine("Exito al agregar concursante.");
+                switch (opcion)
+                {
+                    case 1:
+                        BuscarVuelo(grafo);
+                        break;
+                    case 2:
+                        MostrarCostosOrdenados(grafo, arbol);
+                        break;
+                    case 3:
+                        Console.WriteLine("Saliendo del programa.");
+                        break;
+                    default:
+                        Console.WriteLine("Opcion incorrecta.");
+                        break;
+                }
             }
             else
             {
-                Console.WriteLine("Número inválido.");
+                Console.WriteLine("Entrada no válida.");
             }
-            break;
-
-        case 2: // Desde case 2 al case3 se realiza los 3 tipos de recorrido
-            Console.WriteLine("Recorrido Preorden (Raíz - Izquierda - Derecha):");
-            arbol.PreOrden(arbol.Raiz); 
-            Console.WriteLine();
-            break;
-
-        case 3:
-            Console.WriteLine("Recorrido Inorden (Izquierda - Raíz - Derecha):");
-            arbol.InOrden(arbol.Raiz); 
-            Console.WriteLine();
-            break;
-
-        case 4:
-            Console.WriteLine("Recorrido Postorden (Izquierda - Derecha - Raíz):");
-            arbol.PostOrden(arbol.Raiz); 
-            Console.WriteLine();
-            break;
-
-        case 5:
-            Console.WriteLine("GRACIAS POR UTILIZAR NUESTROS SERVICIOS.");
-            break;
-
-        default:
-            Console.WriteLine("Opción incorrecta. Intenta de nuevo.");
-            break;
+        } while (opcion != 3);
     }
-} while (opcion != 5);
 
-// Clase Nodo
+    void BuscarVuelo(GraphMatrix grafo)
+    {
+        Console.Write("Ciudad de origen: ");
+        string origen = Console.ReadLine();
+        Console.Write("Ciudad de destino: ");
+        string destino = Console.ReadLine();
+
+        if (!grafo.cityToIndex.ContainsKey(origen) || !grafo.cityToIndex.ContainsKey(destino))
+        {
+            Console.WriteLine("Una ciudad o las dos no existen en los registros.");
+            return;
+        }
+
+        var (costo, ruta) = grafo.Dijkstra(origen, destino);
+
+        if (double.IsInfinity(costo))
+        {
+            Console.WriteLine("Ruta no disponible entre esas ciudades.");
+        }
+        else
+        {
+            Console.WriteLine($"\nRuta más barata de {origen} a {destino}:");
+            Console.WriteLine(string.Join(" → ", ruta));
+            Console.WriteLine($"Costo total: ${costo:F2}");
+        }
+    }
+
+    void MostrarCostosOrdenados(GraphMatrix grafo, ArbolBinario arbol)
+    {
+        foreach (var costoVuelo in grafo.listaCostos)
+        {
+            arbol.Insertar(costoVuelo);
+        }
+
+        arbol.MostrarInorden();
+    }
+}
+
 class Nodo
 {
-    public int Valor; // Atributo para el valor del nodo
-    public string Nombre; // Atributo para el nombre del concursante
-    public Nodo Izquierdo; // Atributo para el hijo izquierdo
-    public Nodo Derecho; // Atributo para el hijo derecho
+    public double valor;
+    public Nodo izquierdo;
+    public Nodo derecho;
 
-    public Nodo(int valor, string nombre)
+    public Nodo(double valor)
     {
-        Valor = valor; // Asigna el valor al nodo (numero)
-        Nombre = nombre; // Asigna el nombre al nodo (cadena)
-        Izquierdo = null; // Inicializa el hijo izquierdo
-        Derecho = null; // Inicializa el hijo derecho 
+        this.valor = valor;
+        izquierdo = null;
+        derecho = null;
     }
 }
 
-// Clase Arbol
-class Arbol
+class ArbolBinario
 {
-    public Nodo Raiz; // Atributo para la raíz del árbol
+    public Nodo raiz;
 
-    // Método para insertar un nuevo nodo
-    public void Insertar(int valor, string nombre)
+    public void Insertar(double valor)
     {
-        Raiz = InsertarRecursivo(Raiz, valor, nombre);
+        raiz = InsertarRec(raiz, valor);
     }
 
-    // Método recursivo para insertar un nodo
-    private Nodo InsertarRecursivo(Nodo raiz, int valor, string nombre)
+    private Nodo InsertarRec(Nodo nodo, double valor)
     {
-        if (raiz == null)
-        {
-            return new Nodo(valor, nombre); 
-        }
+        if (nodo == null)
+            return new Nodo(valor);
 
-        if (valor < raiz.Valor)
-            raiz.Izquierdo = InsertarRecursivo(raiz.Izquierdo, valor, nombre); // Inserta en el subárbol izquierdo
+        if (valor < nodo.valor)
+            nodo.izquierdo = InsertarRec(nodo.izquierdo, valor);
         else
-            raiz.Derecho = InsertarRecursivo(raiz.Derecho, valor, nombre); // Inserta en el subárbol derecho
+            nodo.derecho = InsertarRec(nodo.derecho, valor);
 
-        return raiz; // Retorna la raíz del subárbol
+        return nodo;
     }
 
-    // Recorrido Preorden Inorden y Posorden
-    public void PreOrden(Nodo nodo)
+    public void MostrarInorden()
+    {
+        Console.WriteLine("COSTOS DE MENOR A MAYOR");
+        Inorden(raiz);
+        Console.WriteLine(); // salto de línea final
+    }
+
+    private void Inorden(Nodo nodo)
     {
         if (nodo != null)
         {
-            Console.WriteLine($"Número: {nodo.Valor}, Nombre: {nodo.Nombre}"); // Muestra el valor y el nombre del nodo
-            PreOrden(nodo.Izquierdo); 
-            PreOrden(nodo.Derecho);  
-        }
-    }
-
-    public void InOrden(Nodo nodo)
-    {
-        if (nodo != null)
-        {
-            InOrden(nodo.Izquierdo); 
-            Console.WriteLine($"Número: {nodo.Valor}, Nombre: {nodo.Nombre}"); 
-            InOrden(nodo.Derecho);
-        }
-    }
-
-        public void PostOrden(Nodo nodo)
-    {
-        if (nodo != null)
-        {
-            PostOrden(nodo.Izquierdo); 
-            PostOrden(nodo.Derecho); 
-            Console.WriteLine($"Número: {nodo.Valor}, Nombre: {nodo.Nombre}"); 
+            Inorden(nodo.izquierdo);
+            Console.Write($"${nodo.valor:F2} ");
+            Inorden(nodo.derecho);
         }
     }
 }
+
+class GraphMatrix
+{
+    private double[,] adjMatrix;
+    private int size;
+    public Dictionary<string, int> cityToIndex = new();
+    public Dictionary<int, string> indexToCity = new();
+    public List<double> listaCostos = new();
+
+    public GraphMatrix(string path)
+    {
+        LoadGraphFromFile(path);
+    }
+
+    private void LoadGraphFromFile(string path)
+    {
+    var lines = File.ReadAllLines(path);
+        HashSet<string> cities = new();
+
+        foreach (var line in lines)
+        {
+            var parts = line.Split(',');
+            cities.Add(parts[0].Trim());
+            cities.Add(parts[1].Trim());
+        }
+
+        int index = 0;
+        foreach (var city in cities)
+        {
+            cityToIndex[city] = index; //cityToIndex
+            indexToCity[index] = city;
+            index++;
+        }
+
+        size = cities.Count;// numero de nodos
+        adjMatrix = new double[size, size];
+
+        for (int i = 0; i < size; i++)
+            for (int j = 0; j < size; j++)
+                adjMatrix[i, j] = double.PositiveInfinity;
+
+        foreach (var line in lines)
+        {
+            var parts = line.Split(',');
+            string origen = parts[0].Trim();
+            string destino = parts[1].Trim();
+            double costo = double.Parse(parts[3].Trim());
+
+            int i = cityToIndex[origen];
+            int j = cityToIndex[destino];
+
+            adjMatrix[i, j] = Math.Min(adjMatrix[i, j], costo);
+            listaCostos.Add(costo);
+        }
+    }
+
+    public (double, List<string>) Dijkstra(string startCity, string endCity)
+    {
+        int start = cityToIndex[startCity];
+        int end = cityToIndex[endCity];
+
+        double[] dist = new double[size];
+        int[] prev = new int[size];
+        bool[] visited = new bool[size];
+
+        for (int i = 0; i < size; i++)
+        {
+            dist[i] = double.PositiveInfinity;
+            prev[i] = -1;
+        }
+
+        dist[start] = 0;
+
+        for (int count = 0; count < size - 1; count++)
+        {
+            int u = MinDistance(dist, visited);
+            if (u == -1) break;
+            visited[u] = true;
+
+            for (int v = 0; v < size; v++)
+            {
+                if (!visited[v] && adjMatrix[u, v] != double.PositiveInfinity &&
+                    dist[u] + adjMatrix[u, v] < dist[v])
+                {
+                    dist[v] = dist[u] + adjMatrix[u, v];
+                    prev[v] = u;
+                }
+            }
+        }
+
+        List<string> path = new();
+        for (int at = end; at != -1; at = prev[at])
+            path.Insert(0, indexToCity[at]);
+
+        return (dist[end], path);
+    }
+
+    private int MinDistance(double[] dist, bool[] visited)
+    {
+        double min = double.PositiveInfinity;
+        int minIndex = -1;
+
+        for (int v = 0; v < size; v++)
+        {
+            if (!visited[v] && dist[v] <= min)
+            {
+                min = dist[v];
+                minIndex = v;
+            }
+        }
+        return minIndex;
+    }
+}
+
+
