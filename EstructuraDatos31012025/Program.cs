@@ -9,14 +9,14 @@
     //Traductoringles_español.run();
     //Practica3.run();
     //ArbolesBinarios.run();
-    System.Console.WriteLine("semana 16");
+    Console.WriteLine("semana 16");
     Console.WriteLine();
     Console.WriteLine("PRACTICA 4 RECORRIDOS DFS EN GRAFOS");
     Console.WriteLine();
-    // Encuentro de vuelos baratos a partir de una base de datos
-    //arbol binario
+        // Encuentro de vuelos baratos a partir de una base de datos
+        //arbol binario
 
-    // Clase principal que contiene el menú de opciones
+        // Clase principal que contiene el menú de opciones
 
           var grafo = new GraphMatrix("vuelos.txt"); // Archivo .txt para crear el grafo
          int opcion;
@@ -27,8 +27,9 @@
             Console.WriteLine("SELECCIONA UNA OPCIÓN DEL MENÚ");
             Console.WriteLine("1. Mostrar el vuelo más barato.");
             Console.WriteLine("2. Mostrar rutas y costos.");
-            Console.WriteLine("3. Mostrar ruta más barata.");
-            Console.WriteLine("4. Salir.");
+            Console.WriteLine("3. Consultar ruta.");
+            Console.WriteLine("4.Mostrar  costo de menor a mayor");
+            Console.WriteLine("5. Salir.");
 
             if (int.TryParse(Console.ReadLine(), out opcion))
             {
@@ -42,9 +43,18 @@
                         break;
                     
                     case 3:
-                        BuscarRutaMasBarataEntreCiudades(grafo); // Ruta más barata entre dos ciudades
+                        BuscarRutaEntreCiudades(grafo); // Ruta más barata entre dos ciudades
                         break;
                         case 4:
+                        // Insertar y mostrar costos en árbol binario
+                        ArbolBinario arbol = new ArbolBinario();
+                        foreach (var costo in grafo.listaCostos)
+                        {
+                            arbol.Insertar(costo);
+                        }
+                        arbol.MostrarInorden();
+                        break;
+                        case 5:
                         Console.WriteLine("Saliendo del programa.");
                         break;
                     default:
@@ -56,12 +66,12 @@
             {
                 Console.WriteLine("Entrada no válida.");
             }
-        } while (opcion != 3); 
+        } while (opcion != 5); 
 
     
 
         // Función que muestra el vuelo más barato
-        static void MostrarVueloMasBarato(GraphMatrix grafo)
+         void MostrarVueloMasBarato(GraphMatrix grafo)
     {
         // Encontrar el vuelo con el costo más bajo
         var vueloMasBarato = grafo.rutas.OrderBy(r => r.costo).FirstOrDefault();
@@ -87,7 +97,7 @@
     }
 
         // Función que muestra la ruta más barata entre dos ciudades
-        static void BuscarRutaMasBarataEntreCiudades(GraphMatrix grafo)
+        static void BuscarRutaEntreCiudades(GraphMatrix grafo)
         {
         Console.Write("Ciudad de origen: ");
         string origen = Console.ReadLine().Trim();
