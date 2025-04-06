@@ -98,31 +98,47 @@
 
         // Función que muestra la ruta más barata entre dos ciudades
         static void BuscarRutaEntreCiudades(GraphMatrix grafo)
-        {
-        Console.Write("Ciudad de origen: ");
-        string origen = Console.ReadLine().Trim();
-        Console.Write("Ciudad de destino: ");
-        string destino = Console.ReadLine().Trim();
+{
+    Console.Write("Ciudad de origen: ");
+    string origen = Console.ReadLine().Trim();
+    Console.Write("Ciudad de destino: ");
+    string destino = Console.ReadLine().Trim();
 
-        if (!grafo.cityToIndex.ContainsKey(origen) || !grafo.cityToIndex.ContainsKey(destino))
-        {
-            Console.WriteLine("Una ciudad o las dos no existen en los registros.");
-            return;
-        }
+    // Validación de existencia de ciudades
+    bool origenExiste = grafo.cityToIndex.ContainsKey(origen);
+    bool destinoExiste = grafo.cityToIndex.ContainsKey(destino);
 
-        var (costo, ruta) = grafo.Dijkstra(origen, destino);
-
-        if (double.IsInfinity(costo))
-        {
-            Console.WriteLine("Ruta no disponible entre esas ciudades.");
-        }
-        else
-        {
-            Console.WriteLine($"\nRuta más barata de {origen} a {destino}:");
-            Console.WriteLine(string.Join(" → ", ruta));
-            Console.WriteLine($"Costo total: ${costo:F2}");
-        }
+    if (!origenExiste && !destinoExiste)
+    {
+        Console.WriteLine("Estas ciudades no existen en el registro.");
+        return;
     }
+    else if (!origenExiste)
+    {
+        Console.WriteLine($"La ciudad de origen '{origen}' no existe en los registros.");
+        return;
+    }
+    else if (!destinoExiste)
+    {
+        Console.WriteLine($"La ciudad de destino '{destino}' no existe en los registros.");
+        return;
+    }
+
+    // Si ambas existen, intentamos encontrar la ruta
+    var (costo, ruta) = grafo.Dijkstra(origen, destino);
+
+    if (double.IsInfinity(costo) || ruta == null || ruta.Count == 0)
+    {
+        Console.WriteLine($"No hay ruta disponible entre '{origen}' y '{destino}'.");
+    }
+    else
+    {
+        Console.WriteLine($" Ambas ciudades existen y hay una ruta más barata:");
+        Console.WriteLine($"Ruta de {origen} a {destino}:");
+        Console.WriteLine(string.Join(" → ", ruta));
+        Console.WriteLine($"Costo total: ${costo:F2}");
+    }
+}
 
         // Nodo para el árbol binario
         public class Nodo
@@ -177,7 +193,7 @@
             if (nodo != null)
         {
             Inorden(nodo.izquierdo);
-            Console.Write($"{nodo.valor:F2} "); // Mostrar con un solo dígito decimal
+            Console.Write($"{nodo.valor:F2} "); // Mostrar dos dígitos decimal
             Inorden(nodo.derecho);
         }
         }
@@ -194,7 +210,7 @@
 
         public GraphMatrix(string rutaArchivo)
         {
-            var lineas = File.ReadAllLines(rutaArchivo); // Lee todas las líneas del archivo
+            var lineas = File.ReadAllLines(rutaArchivo); // Lee todas las líneas del archivo importado
         var ciudadesSet = new HashSet<string>();
 
         // Busca las ciudades del archivo .txt
@@ -242,7 +258,7 @@
     }
 
         // Buscar el pasaje más barato con el algoritmo Dijkstra
-        public (double, List<string>) Dijkstra(string origen, string destino)
+        public (double, List<string>) Dijkstra(string origen, string destino)// Double representa el costo total del camino más corto.
         {
         int n = matriz.GetLength(0);
         var dist = new double[n];      // Distancia desde el origen
